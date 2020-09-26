@@ -1,0 +1,8 @@
+TODO list:
+
+Lobby matchmaking
+1. Write a function that generates lobby codes. 
+It pulls 5 characters from a string randomly to generate the code.
+2. Put a box that takes the string and uses it as a string
+ to get a game from the server
+3. Start the game if two people are connected
