@@ -2,6 +2,7 @@ import { connect, play, sendUpdate, createLobby, joinLobby } from './networking'
 import { generateCode } from '../shared/utils'
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Main from './render';
 
 const Tile = require('../shared/tile');
 const ClientBoard = require('./clientboard');
@@ -13,94 +14,90 @@ const Constants = require('../shared/constants');
 import './css/main.css';
 
 // Trying out react here before everything
-class PlayMenu extends React.Component {
-    render() {
-      return (
-        <div id="play-menu">
-            <input type="text" id="username-input" placeholder="Username" />
-            <br/>
-            <button id="play-button">Play against a random opponent</button>
-            <br/>
-            <button id="lobby-button">Create a lobby</button>
-            <div id="lobby-code"></div>
-            <br/><br/>
-            <input type="text" id="lobby-input" placeholder="Put lobby code here"/>
-            <button id="join-button">Join a lobby</button>
-        </div>
-        );
-    }
-}
-
-class Canvas extends React.Component {
-    render() {
-      return (
-        <div id="canvas-holder">
-            <canvas id="GameCanvas" width="1280" height="640" className="hidden"></canvas>
-        </div>
-        );
-    }
-}
-
 ReactDOM.render(
-    <PlayMenu/>,
-    // <Canvas/>,
+    <Main/>,
     document.getElementById('root')
 );
 
-ReactDOM.render(
-    <Canvas/>,
-    document.getElementById('react-canvas')
-);
-
-
-
-// connect to the server and do things
-const playMenu = document.getElementById('play-menu');
-const playButton = document.getElementById('play-button');
-const usernameInput = document.getElementById('username-input');
+// Canvas document constants
 const canvas = document.getElementById("GameCanvas");
 const ctx = canvas.getContext("2d");
 
-const lobbyButton = document.getElementById('lobby-button');
+// Main menu document constants
+const playMenu = document.getElementById('play-menu-container');
+const playButton = document.getElementById('play-button');
+const usernameInput = document.getElementById('username-input');
+
+// Make lobby document constants
+const makeLobbyButton = document.getElementById('lobby-button');
 const lobbyCode = document.getElementById('lobby-code');
 
+// Join Lobby document constants
 const joinButton = document.getElementById('join-button');
-const lobbyInput = document.getElementById('lobby-input'); 
+
+// Divs canvas constants
+const canvasDiv = document.getElementById('canvas-container');
 
 Promise.all([
     connect(onGameOver),
 ]).then(() => {
     playButton.onclick = () => {
         // TODO: show searching for match message
-         
+        
         // send username to server
         play(usernameInput.value);    
     }
-
 });
 
+
+const makeLobbyContainer = document.getElementById("make-lobby-container");
+const lobbyCodeContainer = document.getElementById("lobby-code-container");
 // Button interfaces
-lobbyButton.onclick = () => {
-    var code = generateCode();
+makeLobbyButton.onclick = () => {
+    // var code = generateCode();
     // lobbyCode.innerHTML = code;
-    createLobby(usernameInput.value);
+    // var username = usernameInput.value;
+    var username = "Anonymous";  
+    createLobby(username);
+    // the rest of the stuff was moved to the networking function
+    
 }
 
+
+const joinLobbyContainer = document.getElementById("join-lobby-container");
+const joinMessageContainer = document.getElementById("join-message-container");
 joinButton.onclick = () =>{
-    var username = usernameInput.value;
+    // Menu switching
+    playMenu.classList.add('none');
+    joinLobbyContainer.classList.remove('none');
+}
+
+
+/* Join lobby button function 
+* Need to use code to joing game
+*/
+const joinLobbyStartButton = document.getElementById("join-lobby-start-button");
+const lobbyInput = document.getElementById('lobby-input'); 
+joinLobbyStartButton.onclick = () =>{
+    // var username = usernameInput.value;
     var code = lobbyInput.value;
     console.log(`Joining lobby ${lobbyInput.value}`);
     // use lobby code to join game
     if (code.length == Constants.UTILS.CODE_LENGTH){
+        // need return code from lobby in case server can't find a game
+        // with the code
+        // Use anonymous username for now
+        var username = "Anonymous"
         joinLobby(username, code);
     }else{
+        joinMessageContainer.innerHTML = "Invalid code";
         console.log("Code not the right length.");
-    }
+    }  
+    
 }
 
-function onGameOver(){
-    // stuff to do on game over, mostly stop redering things and stuff
-}
+
+
 
 var colors = ["red", "yellow", "blue", "white", "orange", "green"];
 
@@ -113,6 +110,8 @@ var lastPressed = false;
 
 var boards = [];
 // var client = new Client();
+
+var gameInterval;
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -187,21 +186,31 @@ function loop(gameID, playerID, boards, goalBoard){
         boards[i].draw(ctx);
     }
     goalBoard.draw(ctx);
+    
+    sendUpdate(gameID, playerID, boards[0]);
 
     for(var i=0; i < boards.length; i++){
         if(hasWon(boards[i], goalBoard, goalBoard.boardSize)){
             // draw win message on the canvas
             ctx.font = "30px Arial";
             ctx.fillStyle = "black";
-            ctx.fillText(`${boards[i].username} won!`, 
-                canvas.width/2 - ((Constants.GAME.TILE_PADDING+Constants.GAME.TILE_WIDTH)) - (60/2),
-                300);
-            console.log(`${boards[i].username} won!`);
-            break;
+            var x_pos = canvas.width/2 - ((Constants.GAME.TILE_PADDING+Constants.GAME.TILE_WIDTH)) - (60/2);
+            var y_pos = 300;
+            if (i == 0){
+                ctx.fillText(`You won!`, x_pos, y_pos);
+            }
+            else{
+                ctx.fillText(`You lost :(`, x_pos, y_pos);
+            }
+            // ctx.fillText(`${boards[i].username} won!`, 
+            //     canvas.width/2 - ((Constants.GAME.TILE_PADDING+Constants.GAME.TILE_WIDTH)) - (60/2),
+            //     300);
+            // console.log(`${boards[i].username} won!`);
+            onGameOver();
+            return;
         }
     }
 
-    sendUpdate(gameID, playerID, boards[0]);
 }
 
 function hasWon(board, goalBoard, goalSize){
@@ -220,7 +229,7 @@ function hasWon(board, goalBoard, goalSize){
             }
         }
     }
-        
+    
     return true;
 }
 
@@ -228,9 +237,13 @@ function hasWon(board, goalBoard, goalSize){
 export function startGame(update){
     // need to get the boards from the server
     console.log("Recieved Start Message:");
+    
     // play button functionality
-    canvas.classList.remove('hidden');
+    canvasDiv.classList.remove('none');
+    makeLobbyContainer.classList.add('none');
+    joinLobbyContainer.classList.add('none');
     playMenu.classList.add('none');
+    
     
     var gameID = update.game_id;
     var playerID = update.me.id;
@@ -242,18 +255,29 @@ export function startGame(update){
     var player1 = new ClientBoard(update.me.username, 25, 25, 4, player1Board);
     var player2 = new ClientBoard(update.others[0].username, canvas.width-((Constants.GAME.TILE_PADDING+Constants.GAME.TILE_WIDTH)*5) - 25, 25, 4, player2Board);
     
+    // reset boards in case there was a last game
+    boards = []
     // make a board of size three 
     var goal = new GoalBoard(canvas.width/2 - ((Constants.GAME.TILE_PADDING+Constants.GAME.TILE_WIDTH)) - (60/2), 25, 4, goalBoard);
-    
     boards.push(player1);
     boards.push(player2);
-    var interval = setInterval(loop, 1000/60, gameID, playerID, boards, goal);
+    gameInterval = setInterval(loop, 1000/60, gameID, playerID, boards, goal);
     
 }
 
+function onGameOver(){
+    // stuff to do on game over, mostly stop redering things and stuff
+    // for now, present the game menu again
+    playMenu.classList.remove('none');
+    clearInterval(gameInterval);
+}
+
 export function recieveLobbyCode(code){
-    console.log("Recieved Lobby Code");
-    lobbyCode.innerHTML = code;
+    console.log(`Recieved Lobby Code: ${code}`);
+    // change code inside 
+    lobbyCodeContainer.innerHTML = code;
+    playMenu.classList.add('none');
+    makeLobbyContainer.classList.remove('none');
 }
 
 export function updateBoards(update){

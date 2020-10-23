@@ -1,8 +1,75 @@
 * {padding: 0; margin:0; }
-canvas {background: #eee; display: block; margin: 0 auto;}
+canvas {background: rgb(113, 228, 157); display: block; margin: 0 auto;}
 .hidden{visibility: hidden;}
 .none{display: none;}
+body{
+    background-color: rgb(247, 247, 247);
+}
+
+.centered{
+    position: relative;
+    /* top: 25%; */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.menu-column{
+    display: block;
+    /* padding: 5px;
+    position: relative;
+    left:5;
+    line-height: 20px; */
+}
+
+.menu-row{
+    display: table-row-group;
+}
 
 #play-menu{
+    line-height: 20px;
+    height: fit-content;
+    width: fit-content;
     padding: 5px;
+    background-color: rgb(57, 243, 181);
+    margin: 20px;
+    padding: 20px;
+    
+   
+}
+
+#play-button{
+    /* background: rgb(236, 56, 24); */
+    /* padding: 5px; */
+    /* color: rgb(247, 244, 243); */
+}
+
+
+#signature-container{
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    color: rgb(20, 126, 73);
+}
+
+#logo-container{
+    color: rgb(53, 179, 116);
+    font-size: 50pt;
+    position: relative;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#login-container{
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: rgb(82, 80, 80) ;
+    /* width: ; */
+    padding: 10px;
+    color: rgb(255, 255, 255);
+}
+
+#play-menu-bottom{
+    position: relative;
+    align-content: center;
 }
