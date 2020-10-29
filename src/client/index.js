@@ -9,7 +9,6 @@ const ClientBoard = require('./clientboard');
 const GoalBoard = require('./goalboard');
 const Constants = require('../shared/constants');
 
-
 // import css
 import './css/main.css';
 
@@ -18,6 +17,8 @@ ReactDOM.render(
     <Main/>,
     document.getElementById('root')
 );
+
+import './buttons';
 
 // Canvas document constants
 const canvas = document.getElementById("GameCanvas");
@@ -45,14 +46,19 @@ Promise.all([
         // TODO: show searching for match message
         
         // send username to server
-        play(usernameInput.value);    
+        var username = usernameInput.value
+        if (username = ""){
+            username = "Anonymous";
+        }
+        play(username);    
     }
 });
 
-
+// Button interfaces
+// ************
+// Make lobby buttons
 const makeLobbyContainer = document.getElementById("make-lobby-container");
 const lobbyCodeContainer = document.getElementById("lobby-code-container");
-// Button interfaces
 makeLobbyButton.onclick = () => {
     // var code = generateCode();
     // lobbyCode.innerHTML = code;
@@ -63,7 +69,16 @@ makeLobbyButton.onclick = () => {
     
 }
 
+const makeLobbyCloseButton = document.getElementById("make-lobby-close-button");
+makeLobbyCloseButton.onclick = () => {
+    showMainMenu();
+}
+// *********************
 
+/* *********************
+*  Join lobby button function 
+* Need to use code to joing game
+*/
 const joinLobbyContainer = document.getElementById("join-lobby-container");
 const joinMessageContainer = document.getElementById("join-message-container");
 joinButton.onclick = () =>{
@@ -72,10 +87,6 @@ joinButton.onclick = () =>{
     joinLobbyContainer.classList.remove('none');
 }
 
-
-/* Join lobby button function 
-* Need to use code to joing game
-*/
 const joinLobbyStartButton = document.getElementById("join-lobby-start-button");
 const lobbyInput = document.getElementById('lobby-input'); 
 joinLobbyStartButton.onclick = () =>{
@@ -96,8 +107,11 @@ joinLobbyStartButton.onclick = () =>{
     
 }
 
-
-
+const joinLobbyCloseButton = document.getElementById("join-lobby-close-button");
+joinLobbyCloseButton.onclick = () =>{
+    showMainMenu();
+}
+// *************
 
 var colors = ["red", "yellow", "blue", "white", "orange", "green"];
 
@@ -239,11 +253,9 @@ export function startGame(update){
     console.log("Recieved Start Message:");
     
     // play button functionality
-    canvasDiv.classList.remove('none');
-    makeLobbyContainer.classList.add('none');
-    joinLobbyContainer.classList.add('none');
-    playMenu.classList.add('none');
-    
+    // remove menus and only show canvas
+    hideMenus();
+    showCanvas();
     
     var gameID = update.game_id;
     var playerID = update.me.id;
@@ -282,4 +294,26 @@ export function recieveLobbyCode(code){
 
 export function updateBoards(update){
     boards[1].updateTiles(update.others[0].tiles);
+}
+
+
+// figure out how to move this stuff to a different file later
+function hideMenus(){
+    playMenu.classList.add('none');
+    makeLobbyContainer.classList.add('none');
+    joinLobbyContainer.classList.add('none');
+}
+
+function showCanvas(){
+    canvasDiv.classList.remove('none');
+}
+
+function hideCanvas(){
+    canvasDiv.classList.add('none');
+}
+
+function showMainMenu(){
+    playMenu.classList.remove('none');
+    makeLobbyContainer.classList.add('none');
+    joinLobbyContainer.classList.add('none');
 }

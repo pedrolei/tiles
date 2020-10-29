@@ -71,7 +71,7 @@ class MakeLobby extends React.Component{
                 </div>
                 <div id="lobby-return-container">
                     {/* Need either an a tag or button */}
-                    <button id="lobby-close-button">Return to Main Menu</button>
+                    <button id="make-lobby-close-button">Return to Main Menu</button>
                 </div>
             </div>
         )
