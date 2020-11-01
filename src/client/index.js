@@ -39,6 +39,11 @@ const joinButton = document.getElementById('join-button');
 // Divs canvas constants
 const canvasDiv = document.getElementById('canvas-container');
 
+function getUsername(){
+    if (usernameInput.value == ""){ return "Anonymous"}
+    else{ return usernameInput.value}
+}
+
 Promise.all([
     connect(onGameOver),
 ]).then(() => {
@@ -46,11 +51,7 @@ Promise.all([
         // TODO: show searching for match message
         
         // send username to server
-        var username = usernameInput.value
-        if (username = ""){
-            username = "Anonymous";
-        }
-        play(username);    
+        play(getUsername());    
     }
 });
 
@@ -63,8 +64,8 @@ makeLobbyButton.onclick = () => {
     // var code = generateCode();
     // lobbyCode.innerHTML = code;
     // var username = usernameInput.value;
-    var username = "Anonymous";  
-    createLobby(username);
+    // var username = "Anonymous";  
+    createLobby(getUsername());
     // the rest of the stuff was moved to the networking function
     
 }
@@ -98,8 +99,7 @@ joinLobbyStartButton.onclick = () =>{
         // need return code from lobby in case server can't find a game
         // with the code
         // Use anonymous username for now
-        var username = "Anonymous"
-        joinLobby(username, code);
+        joinLobby(getUsername(), code);
     }else{
         joinMessageContainer.innerHTML = "Invalid code";
         console.log("Code not the right length.");

@@ -76,7 +76,8 @@ function createLobby(username){
         code = utils.generateCode();
     }
     var game = new Game(code);
-    console.log(`Adding player to ${game.id}`)
+    console.log(`Adding player ${username} to ${game.id}`)
+
     game.addPlayer(this, username);
 
     // add game to ongoingGames map

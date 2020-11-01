@@ -34,7 +34,7 @@ export const sendUpdate = (gameID, playerID, board) => {
 };
 
 export const createLobby = username => {
-    socket.emit(Constants.MSG_TYPES.CREATE_LOBBY);
+    socket.emit(Constants.MSG_TYPES.CREATE_LOBBY, username);
 };
 
 export const joinLobby = (username, code) => {

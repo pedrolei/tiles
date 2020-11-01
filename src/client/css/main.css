@@ -1,5 +1,9 @@
 * {padding: 0; margin:0; }
-canvas {background: rgb(113, 228, 157); display: block; margin: 0 auto;}
+canvas {
+    background: rgb(113, 228, 157);
+    display: block; 
+    margin: 5px auto;
+}
 .hidden{visibility: hidden;}
 .none{display: none;}
 body{
@@ -25,21 +29,36 @@ body{
     display: table-row-group;
 }
 
-#play-menu{
-    line-height: 20px;
+.menu{
     height: fit-content;
     width: fit-content;
     padding: 5px;
     background-color: rgb(57, 243, 181);
-    margin: 20px;
-    padding: 20px;
-    
-   
+}
+
+.menu-item{
+    padding:3px;
+}
+
+.codeFormat{
+    background-color:rgb(255, 255, 255) ;
+    padding: 5px;
+    text-align: center;
+    width: fit-content;
+}
+
+.inputFormat{
+    width: 100%;
+}
+
+.buttonFormat{
+    padding: 5px;
+    width: 100%;
 }
 
 #play-button{
     /* background: rgb(236, 56, 24); */
-    /* padding: 5px; */
+    padding: 5px;
     /* color: rgb(247, 244, 243); */
 }
 
@@ -59,17 +78,17 @@ body{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-#login-container{
+/* #login-container{
     position: fixed;
     top: 0;
     right: 0;
     background-color: rgb(82, 80, 80) ;
-    /* width: ; */
     padding: 10px;
     color: rgb(255, 255, 255);
-}
+} */
 
 #play-menu-bottom{
     position: relative;
-    align-content: center;
+    /* align-content: center; */
 }
+
