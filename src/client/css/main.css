@@ -78,6 +78,13 @@ body{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+#instructions-container{
+    position: relative;
+    text-align: justify;
+    width: auto;
+    padding: 5%;
+}
+
 /* #login-container{
     position: fixed;
     top: 0;

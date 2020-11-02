@@ -9,6 +9,7 @@ export default class Main extends React.Component{
                 <div id="main-container">
                     {/* <Login/> */}
                     <Logo/>
+                    <Instructions/>
                     <PlayMenu/>
                     <MakeLobby/>
                     <JoinLobby/>
@@ -20,12 +21,30 @@ export default class Main extends React.Component{
     }
 }
 
+class Instructions extends React.Component{
+    render(){
+        return (
+            <div id="instructions-container">
+                Welcome to Pedro's Puzzle Panic!
+                Once you find a match there will be three square boards.
+                The left board is yours, the center is the goal and the 
+                right one is your opponent's.
+                Use the arrow keys to move the black square in your board.
+                Your goal is to make the center nine tiles of your boards
+                be arranged the same as those of the goal board.
+                Good Luck!
+            </div>
+        )
+    }
+}
+
 class PlayMenu extends React.Component {
     render() {
       return (
         <div id="play-menu-container">
             <div id="play-menu" className="centered menu-column menu">
                 <div id="play-menu-top">
+                    <div id="menu-message-container"></div>
                     <div id="username-input-container" className="menu-item">
                         <input type="text" id="username-input" className="inputFormat" placeholder="Choose a Username" />
                     </div>
@@ -125,7 +144,11 @@ class Signature extends React.Component {
     render(){
         return (
             <div id="signature-container">
-                <div id="signature">A game by Pedro Leiva</div>
+                <div id="signature">
+                    <a href="https://github.com/pedrolei/tiles">
+                        A game by Pedro Leiva
+                    </a>
+                </div>
             </div>
         )
     }

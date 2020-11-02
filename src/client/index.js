@@ -44,12 +44,14 @@ function getUsername(){
     else{ return usernameInput.value}
 }
 
+const menuMessageContainer = document.getElementById("menu-message-container");
 Promise.all([
     connect(onGameOver),
 ]).then(() => {
     playButton.onclick = () => {
         // TODO: show searching for match message
-        
+        // hideMenus();
+        menuMessageContainer.innerHTML = "Looking for a game...";
         // send username to server
         play(getUsername());    
     }
@@ -61,13 +63,8 @@ Promise.all([
 const makeLobbyContainer = document.getElementById("make-lobby-container");
 const lobbyCodeContainer = document.getElementById("lobby-code-container");
 makeLobbyButton.onclick = () => {
-    // var code = generateCode();
-    // lobbyCode.innerHTML = code;
-    // var username = usernameInput.value;
-    // var username = "Anonymous";  
     createLobby(getUsername());
     // the rest of the stuff was moved to the networking function
-    
 }
 
 const makeLobbyCloseButton = document.getElementById("make-lobby-close-button");
@@ -216,10 +213,6 @@ function loop(gameID, playerID, boards, goalBoard){
             else{
                 ctx.fillText(`You lost :(`, x_pos, y_pos);
             }
-            // ctx.fillText(`${boards[i].username} won!`, 
-            //     canvas.width/2 - ((Constants.GAME.TILE_PADDING+Constants.GAME.TILE_WIDTH)) - (60/2),
-            //     300);
-            // console.log(`${boards[i].username} won!`);
             onGameOver();
             return;
         }
@@ -298,10 +291,13 @@ export function updateBoards(update){
 
 
 // figure out how to move this stuff to a different file later
+const instructionsContainer = document.getElementById("instructions-container");
 function hideMenus(){
     playMenu.classList.add('none');
     makeLobbyContainer.classList.add('none');
     joinLobbyContainer.classList.add('none');
+    instructionsContainer.classList.add('none');
+
 }
 
 function showCanvas(){
