@@ -1,13 +1,15 @@
 # Tiles
 An online multiplayer puzzle-racing game 
 
-The website is now up on pthree.cc.
+The website is no longer up on pthree.cc.
+
+If you actually played it let me know and I can put it back up.
 
 If you want to test it by yourself, open up the website in two browser tabs. Input a name
 in each one and either hit play against a random opponent or use the lobby functionality to
 start a game against yourself. 
 
-Planned updates:
+Planned updates (but probably not happening):
 - Improve UX
 - Add music
 - Fix matchmaking
